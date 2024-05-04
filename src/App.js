@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setJobs } from './actions/jobactions';
+import JobCard from './components/JobCard';
+import Filters from './components/Filters';
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  const jobs = useSelector((state) => state.job.jobs.jdList);
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch('https://api.weekday.technology/adhoc/getSampleJdJSON', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ limit: 10, offset: 0 }),
+      });
+      const data = await response.json();
+      console.log(data)
+      dispatch(setJobs(data));
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Filters />
+      <div className="job-list">
+        {jobs.map((job) => (
+          <JobCard key={job.id} job={job} />
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
