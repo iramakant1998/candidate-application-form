@@ -1,6 +1,6 @@
 // src/reducers/jobReducer.js
 const initialState = {
-    jobs: [], // Ensure that jobs array is initialized to an empty array
+    jobs: [],
   };
   
   const jobReducer = (state = initialState, action) => {

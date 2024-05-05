@@ -9,15 +9,15 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
     gap : 2rem;
     padding-block: 2rem;
 }
 
-card{
+/* card{
     border-radius: 3px;
-    box-shadow: 3px;
-}
+    box-shadow: 8px;
+} */
 
 .card-header{
     display: flex;
@@ -30,7 +30,7 @@ card{
     line-height: 1.5rem;
 }
 img{
-    width: 40px;
+    width: 30px;
 }
 
 button{
@@ -65,3 +65,46 @@ button{
     font-weight: 900;
 }
 
+
+.view-more {
+    display: flex;
+    background-color: transparent;
+    justify-content: center;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-top: 8px;
+    font-weight: 900;
+}
+
+.view-more:hover {
+    background-color: #8cd9e4;
+}
+
+.image-div{
+    padding: 0.6rem;
+}
+
+.job-card {
+    max-width: 345px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.apply-btn{
+    background-color: aquamarine;
+}
+
+.select-container {
+    margin-right: 10px;
+    display: flex;
+    align-items: end;
+}
+
+.select-container select {
+    height: 2rem;
+    margin : 1rem 0px 0px 1rem;
+}
+
+.apply-btn{
+    margin-left: 1rem;
+}
