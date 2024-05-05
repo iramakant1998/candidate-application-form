@@ -8,8 +8,8 @@ import JobFilter from "./components/JobFilter";
 const App = () => {
   const dispatch = useDispatch();
   const jobs = useSelector((state) => state.job.jobs.jdList);
-  const [filteredJobs, setFilteredJobs] = useState(jobs);
-
+  const filters = useSelector((state) => state.filter.filters);
+  console.log(filters)
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -34,29 +34,96 @@ const App = () => {
     }
   };
 
-  const applyFilters = (filters) => {
-    const filtered = jobs.filter((job) => {
-      return (
-        (filters.minExp === "" || job.minExp === filters.minExp) &&
-        (filters.companyName === "" ||
-          job.companyName === filters.companyName) &&
-        (filters.location === "" || job.location === filters.location) &&
-        (filters.remote === "" || job.remote === filters.remote) &&
-        (filters.techStack === "" || job.techStack === filters.techStack) &&
-        (filters.role === "" || job.role === filters.role) &&
-        (filters.minBasePay === "" || job.minBasePay === filters.minBasePay)
-      );
-    });
-    setFilteredJobs(filtered);
-  };
+    const filterJobs = () => {
+      if (!filters || filters.minExp == null) {
+        return jobs;
+      }
+      return jobs?.filter((job) => {
+      if (
+        filters.minExp &&
+        !filters.companyName &&
+        !filters.location &&
+        !filters.remote &&
+        !filters.techStack &&
+        !filters.Role &&
+        !filters.MinSalary
+      ) {
+        return job.minExp == filters.minExp;
+      } else if (
+        filters.minExp &&
+        filters.companyName &&
+        !filters.location &&
+        !filters.remote &&
+        !filters.techStack &&
+        !filters.Role &&
+        !filters.MinSalary
+      ) {
+        return (
+          job.minExp == filters.minExp && job.companyName == filters.companyName
+        );
+        } else if (
+          filters.minExp &&
+          filters.companyName &&
+          filters.location &&
+          !filters.remote &&
+          !filters.techStack &&
+          !filters.Role &&
+          !filters.MinSalary
+        ) {
+          return (
+            job.minExp == filters.minExp &&
+            job.companyName == filters.companyName && 
+            job.location == filters.location
+          );
+          } else if (
+            filters.minExp &&
+            filters.companyName &&
+            filters.location &&
+            !filters.remote &&
+            !filters.techStack &&
+            filters.Role &&
+            !filters.MinSalary
+          ) {
+            return (
+              job.minExp == filters.minExp &&
+              job.companyName == filters.companyName &&
+              job.location == filters.location &&
+              job.jobRole == filters.Role
+            );
+          }else if (
+            filters.minExp &&
+            filters.companyName &&
+            filters.location &&
+            !filters.remote &&
+            !filters.techStack &&
+            filters.Role &&
+            filters.MinSalary
+          ) {
+            return (
+              job.minExp == filters.minExp &&
+              job.companyName == filters.companyName &&
+              job.location == filters.location &&
+              job.jobRole == filters.Role &&
+              job.minJdSalary == filters.MinSalary
+            );} 
+          else {
+            return [];
+          }
+      });
+    };
+
+    const filteredJobs = filterJobs();
+    console.log(filteredJobs);
 
   return (
     <div className="app">
       <div className="job-list">
-        <JobFilter jobs={jobs} applyFilters={applyFilters} />
-        {jobs?.map((job) => (
-          <JobCard key={job.jdUid} job={job} />
-        ))}
+        <JobFilter jobs={jobs} />
+        {filters
+          ?
+            filteredJobs?.map((job) => <JobCard key={job.jdUid} job={job} />)
+          :
+            jobs?.map((job) => <JobCard key={job.jdUid} job={job} />)}
       </div>
     </div>
   );

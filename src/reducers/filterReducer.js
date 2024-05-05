@@ -1,14 +1,6 @@
 // src/reducers/filterReducer.js
 const initialState = {
-    filters: {
-      minExperience: 0,
-      companyName: '',
-      location: '',
-      remote: false,
-      techStack: '',
-      role: '',
-      minBasePay: 0,
-    },
+    filters: {},
   };
   
   const filterReducer = (state = initialState, action) => {

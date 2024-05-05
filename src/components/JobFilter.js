@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
+import React, { useEffect, useState } from "react";
+import {setFilters} from "../actions/filterActions"
 import "../App.css";
+import { useDispatch } from "react-redux";
 
-const JobFilter = ({ jobs, applyFilters }) => {
+const JobFilter = ({ jobs}) => {
+  const dispatch = useDispatch();
   const commonTechStacks = [
     "React",
     "Angular",
@@ -41,36 +43,25 @@ const JobFilter = ({ jobs, applyFilters }) => {
     ),
   ];
 
-  const [filters, setFilters] = useState({
-    uniqueMinExpValues: "",
-    uniqueCompanyNames: "",
-    uniqueLocations: "",
-    uniqueRemoteOptions: "",
-    uniqueTechStacks: "",
-    uniqueRoles: "",
-    uniqueMinBasePays: "",
-  });
+  const [filter, setFilter] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prevFilters) => ({
+    setFilter((prevFilters) => ({
       ...prevFilters,
       [name]: value,
     }));
   };
+  
+  dispatch(setFilters(filter));
 
-  const handleFilterSubmit = (e) => {
-    e.preventDefault();
-    // Handle filter submission
-    applyFilters(filters);
-  };
+  console.log(filter);
 
   return (
-    <form onSubmit={handleFilterSubmit} className="form-container">
+    <form className="form-container">
       <div className="select-container">
         <select
           name="minExp"
-          value={filters.minExp}
           onChange={handleInputChange}
         >
           <option value="">Minimum Experience</option>
@@ -82,7 +73,6 @@ const JobFilter = ({ jobs, applyFilters }) => {
         </select>
         <select
           name="companyName"
-          value={filters.companyName}
           onChange={handleInputChange}
         >
           <option value="">Company Name</option>
@@ -93,8 +83,7 @@ const JobFilter = ({ jobs, applyFilters }) => {
           ))}
         </select>
         <select
-          name="companyName"
-          value={filters.companyName}
+          name="location"
           onChange={handleInputChange}
         >
           <option value="">Location</option>
@@ -106,7 +95,6 @@ const JobFilter = ({ jobs, applyFilters }) => {
         </select>
         <select
           name="remote"
-          value={filters.remote}
           onChange={handleInputChange}
         >
           <option value="">Remote/on-site</option>
@@ -117,8 +105,7 @@ const JobFilter = ({ jobs, applyFilters }) => {
           ))}
         </select>
         <select
-          name="companyName"
-          value={filters.companyName}
+          name="techStack"
           onChange={handleInputChange}
         >
           <option value="">Tech stack</option>
@@ -129,8 +116,7 @@ const JobFilter = ({ jobs, applyFilters }) => {
           ))}
         </select>
         <select
-          name="companyName"
-          value={filters.companyName}
+          name="Role"
           onChange={handleInputChange}
         >
           <option value="">Role</option>
@@ -141,8 +127,7 @@ const JobFilter = ({ jobs, applyFilters }) => {
           ))}
         </select>
         <select
-          name="companyName"
-          value={filters.companyName}
+          name="MinSalary"
           onChange={handleInputChange}
         >
           <option value="">Minimum Base Pay</option>
@@ -152,9 +137,6 @@ const JobFilter = ({ jobs, applyFilters }) => {
             </option>
           ))}
         </select>
-        <div className="apply-btn">
-          <Button variant="contained">Apply Filter</Button>
-        </div>
       </div>
     </form>
   );
